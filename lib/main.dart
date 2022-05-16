@@ -1,34 +1,23 @@
-import 'package:alura/screens/dashboard.dart';
+import 'package:alura_crashlytics/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
-
-  // AppDatabase.save(ContactModel(0, 'Julieta', 2000)).then((id) {
-  //   AppDatabase.findAll().then((contacts) => debugPrint(contacts.toString()));
-  // });
-
-  // AppDatabase.findAll().then(
-  //   (contacts) {
-  //     for (ContactModel contact in contacts) {
-  //       debugPrint(contact.toString());
-  //     }
-  //   },
-  // );
+  runApp(BytebankApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class BytebankApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: Colors.green[900],
+        accentColor: Color.fromRGBO(71, 161, 56, 1),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color.fromRGBO(71, 161, 56, 1),
+          textTheme: ButtonTextTheme.primary,
+        ),
       ),
       home: Dashboard(),
     );

@@ -1,4 +1,5 @@
-import 'package:alura/screens/contacts_list.dart';
+import 'package:alura_crashlytics/screens/contacts_list.dart';
+import 'package:alura_crashlytics/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -6,100 +7,94 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("dash"),
+        title: Text('Dashboard'),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: Image.asset(
-                "images/bytebank_logo.png",
-              ),
-            ),
-            Row(
-              children: [
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('images/bytebank_logo.png'),
+          ),
+          Container(
+            height: 120,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
                 _FeatureItem(
-                  name: "Transfer",
-                  icon: Icons.monetization_on,
-                  onClick: () => _showContactList(),
-                  // onClick: () => Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return ContactsList();
-                  //     },
-                  //   ),
-                  // ),
+                  'Transfer',
+                  Icons.monetization_on,
+                  onClick: () => _showContactsList(context),
                 ),
                 _FeatureItem(
-                  name: "Transaction Feed",
-                  icon: Icons.description,
-                  onClick: () => debugPrint('bacon'),
-                  // onClick: () => Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return ContactsList();
-                  //     },
-                  //   ),
-                  // ),
+                  'Transaction Feed',
+                  Icons.description,
+                  onClick: () => _showTransactionsList(context),
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  void _showContactList() {
-    debugPrint('ads');
+  void _showContactsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ContactsList(),
+      ),
+    );
+  }
+
+  _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TransactionsList(),
+      ),
+    );
   }
 }
 
 class _FeatureItem extends StatelessWidget {
-  final IconData icon;
   final String name;
+  final IconData icon;
   final Function onClick;
 
-  const _FeatureItem({this.icon, this.name = "", @required this.onClick});
+  _FeatureItem(
+    this.name,
+    this.icon, {
+    @required this.onClick,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: this.onClick,
-          // onTap: () => Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       return ContactsList();
-          //     },
-          //   ),
-          // ),
+          onTap: () => onClick(),
           child: Container(
-            height: 100,
+            padding: EdgeInsets.all(8.0),
             width: 150,
-            padding: const EdgeInsets.all(8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Icon(
-                  this.icon ?? Icons.people,
+                  icon,
                   color: Colors.white,
-                  size: 32,
+                  size: 24.0,
                 ),
                 Text(
-                  this.name,
+                  name,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16.0,
                   ),
-                ),
+                )
               ],
             ),
           ),

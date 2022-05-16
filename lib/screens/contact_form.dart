@@ -1,41 +1,65 @@
-import 'package:alura/database/contact_dao.dart';
-import 'package:alura/model/contact_model.dart';
+import 'package:alura_crashlytics/database/dao/contact_dao.dart';
+import 'package:alura_crashlytics/models/contact.dart';
 import 'package:flutter/material.dart';
 
-class ContactForm extends StatelessWidget {
+class ContactForm extends StatefulWidget {
+  @override
+  _ContactFormState createState() => _ContactFormState();
+}
+
+class _ContactFormState extends State<ContactForm> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _accountController = TextEditingController();
+  final TextEditingController _accountNumberController =
+      TextEditingController();
+  final ContactDao _dao = ContactDao();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Contact"),
+        title: Text('New contact'),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             TextField(
-              decoration: InputDecoration(labelText: "Full Name:"),
-              controller: this._nameController,
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Full name',
+              ),
+              style: TextStyle(
+                fontSize: 24.0,
+              ),
             ),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Acccount Number:"),
-              controller: this._accountController,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: TextField(
+                controller: _accountNumberController,
+                decoration: InputDecoration(
+                  labelText: 'Account number',
+                ),
+                style: TextStyle(
+                  fontSize: 24.0,
+                ),
+                keyboardType: TextInputType.number,
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                final String name = _nameController.text;
-                final String accountNumber = _accountController.text;
-
-                final ContactModel newContact =
-                    ContactModel(0, name, int.tryParse(accountNumber));
-                ContactDao()
-                    .save(newContact)
-                    .then((id) => Navigator.pop(context));
-              },
-              child: Text("Create"),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: SizedBox(
+                width: double.maxFinite,
+                child: RaisedButton(
+                  child: Text('Create'),
+                  onPressed: () {
+                    final String name = _nameController.text;
+                    final int accountNumber =
+                        int.tryParse(_accountNumberController.text);
+                    final Contact newContact = Contact(0, name, accountNumber);
+                    _dao.save(newContact).then((id) => Navigator.pop(context));
+                  },
+                ),
+              ),
             )
           ],
         ),
